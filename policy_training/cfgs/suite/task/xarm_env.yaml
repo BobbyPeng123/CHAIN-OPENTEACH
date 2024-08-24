@@ -1,0 +1,12 @@
+defaults:
+  - _self_
+
+suite: xarm_env
+tasks:
+  # - 0529_norot_ballincup #y
+  # - 0702_plug_insertion
+ #  - 0716_pick_bread
+# - 0801_pick_bread_fisheye
+# - 0812_pick_yoghurt_out_from_fridge
+# - 0812_place_yoghurt_on_table
+- 0816_open_microwave

@@ -1,0 +1,14 @@
+dataset: prep
+data_suffix: processed
+modalities:
+  - kinova
+  - onrobot
+  - cam_0
+  - cam_1
+  - cam_2
+thresholds:
+  tactile: 0.0
+  kinova: 0.008
+  onrobot: null
+  cam: null
+drive_modality: null

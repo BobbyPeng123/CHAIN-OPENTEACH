@@ -1,0 +1,29 @@
+# @package agent
+_target_: agent.drqv2.DrQv2Agent
+obs_shape: ??? # to be specified later
+action_shape: ??? # to be specified later
+device: ${device}
+lr: 1e-4
+critic_target_tau: 0.01
+update_every_steps: 2
+use_tb: ${use_tb}
+num_expl_steps: 0 #2000
+hidden_dim: ${suite.hidden_dim}
+stddev_schedule: ${stddev_schedule_drq} #0.1
+stddev_clip: 0.3
+eps_greedy_schedule: 0.2
+augment: True
+obs_type: ${obs_type}
+bc_regularize: ${bc_regularize}
+bc_weight_type: ${bc_weight_type}
+bc_weight_schedule: 'linear(1.0,0.1,20000)'
+rewards: sinkhorn_cosine
+sinkhorn_rew_scale: 200
+update_target_every: 10000
+auto_rew_scale: true
+auto_rew_scale_factor: 10
+train_encoder: true
+layernorm: false
+utd: 1 # update to data ratio (utd number of critic updates per data collection step)
+actor_type: vanilla # vanilla, diag_gaussian, gpt, ssm
+action_type: ??? # to be specified later

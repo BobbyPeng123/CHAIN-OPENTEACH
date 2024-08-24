@@ -1,0 +1,29 @@
+dataset: 0524_cup_ball
+data_suffix: processed_bc
+modalities:
+  - kinova_pos
+  - kinova_ori
+  - onrobot_obs
+  - onrobot_cmd
+  - cam_0
+  - cam_1
+  - cam_2
+thresholds:
+  tactile: null
+  kinova_pos: 0.002
+  kinova_ori: null
+  onrobot: null
+  cam: null
+state_modalities:
+  - kinova_pos
+  - kinova_ori
+  # - onrobot_obs
+action_modalities:
+  - kinova_pos
+  # - kinova_ori
+drive_modality: kinova_pos
+drive_frequency: 10.
+
+hydra:
+  run:
+    dir: ./preprocessing_output

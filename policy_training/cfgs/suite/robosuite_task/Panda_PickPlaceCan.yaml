@@ -1,0 +1,4 @@
+defaults:
+- params
+- _self_
+task_name: Panda_PickPlaceCan

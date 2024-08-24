@@ -1,0 +1,84 @@
+defaults:
+  - local_config
+  - _self_
+  - agent: bc
+  - dataloader: xarm_env_aa
+  - suite: xarm_env_aa
+  # - override hydra/launcher: submitit_local
+
+# replay buffer
+replay_buffer_size: 150000
+replay_buffer_num_workers: 2
+nstep: 3
+batch_size: 256
+# misc
+seed: 0
+device: cuda
+save_video: true
+save_train_video: false
+use_tb: true
+eval: true
+
+# wandb
+use_wandb: false
+wandb_entity: "rbhirang"
+wandb_project: "robosuite_test"
+exp_group: ${now:%H%M%S}_${experiment_label}
+exp_name: ${now:%H%M%S}_${experiment}
+
+# experiment
+obs_type: 'pixels' # pixels, features
+num_demos_per_task: 50
+encoder_type: 'resnet' # base, patch, resnet
+policy_type: 'gpt' # mlp, gpt
+policy_head: deterministic # deterministic, gmm, bet, diffusion, vqbet
+use_aux_inputs: true
+use_language: false
+use_actions: false
+sequential_train: false
+irl: false
+experiment: ${suite.name}_eval_${obs_type}
+experiment_label: ${policy_head}
+
+# expert dataset
+num_demos: null #10(dmc), 1(metaworld), 1(particle), 1(robotgym)
+expert_dataset: ${dataloader.bc_dataset}
+
+# Load weights
+load_bc: true
+# bc_weight: /home/raunaq/code/crossmodal_repr/exp_local/2024.06.13_xarm_env_bc_pixels/110606_deterministic/snapshot/2000.pt
+# bc_weight: /home/raunaq/code/crossmodal_repr/exp_local/2024.06.13_xarm_env_bc_pixels/120851_deterministic/snapshot/4000.pt
+# bc_weight: /mnt/robotlab/siddhant/tactile_openteach/policy_training/exp_local/2024.07.17_xarm_env_bc_pixels/120243_deterministic/snapshot/9000.pt
+# bc_weight: /mnt/robotlab/siddhant/tactile_openteach/policy_training/exp_local/2024.07.23_xarm_env_bc_pixels/141157_deterministic/snapshot/9000.pt
+# bc_weight: /mnt/robotlab/siddhant/tactile_openteach/policy_training/exp_local/2024.07.23_xarm_env_bc_pixels/161114_deterministic/snapshot/9000.pt
+# bc_weight: /mnt/robotlab/siddhant/tactile_openteach/policy_training/exp_local/2024.08.05_xarm_env_bc_pixels/123154_deterministic/snapshot/9000.pt
+# bc_weight: /mnt/robotlab/siddhant/tactile_openteach/policy_training/exp_local/2024.08.12_xarm_env_bc_pixels/211351_deterministic/snapshot/130000.pt # best picking
+# bc_weight: /mnt/robotlab/siddhant/tactile_openteach/policy_training/exp_local/2024.08.13_xarm_env_bc_pixels/190309_deterministic/snapshot/54000.pt # best placing
+bc_weight: /mnt/robotlab/siddhant/tactile_openteach/policy_training/exp_local/2024.08.18_xarm_env_bc_pixels/221909_deterministic/snapshot/130000.pt # best oven opening
+
+load_encoder: false
+# encoder_weight: /home/siddhant/github/retrieval/behavior_cloning2/exp_local/2024.01.03/123609_multitask_textprompt_5scenes_actionchunking_mocoencoder/snapshot.pt
+
+# Train with BC loss
+bc_regularize: false
+bc_weight_type: 'qfilter' # linear, qfilter
+
+# Action chunking parameters
+temporal_agg: true
+num_queries: 10
+
+# TODO: Fix this
+max_episode_len: 10000
+
+hydra:
+  job:
+    chdir: true
+  run:
+    dir: ./exp_local/${now:%Y.%m.%d}_${experiment}/${now:%H%M%S}_${experiment_label}
+  sweep:
+    dir: ./exp_local/${now:%Y.%m.%d}/${now:%H%M%S}
+    subdir: ${hydra.job.num}
+  # launcher:
+  #   tasks_per_node: 1
+  #   nodes: 1
+  #   submitit_folder: ./exp/${now:%Y.%m.%d}/${now:%H%M%S}_${experiment}/.slurm

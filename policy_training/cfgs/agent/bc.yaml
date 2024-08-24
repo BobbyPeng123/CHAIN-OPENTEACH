@@ -1,0 +1,36 @@
+# @package agent
+_target_: agent.bc.BCAgent
+obs_shape: ??? # to be specified later
+action_shape: ??? # to be specified later
+device: ${device}
+lr: 1e-4 #1e-5 #1e-4
+hidden_dim: ${suite.hidden_dim}
+stddev_schedule: 0.1
+stddev_clip: 0.3
+use_tb: ${use_tb}
+augment: True
+obs_type: ${obs_type}
+encoder_type: ${encoder_type}
+policy_type: ${policy_type}
+policy_head: ${policy_head}
+pixel_keys: ${suite.pixel_keys}
+aux_keys: ${suite.aux_keys}
+feature_key: ${suite.feature_key}
+use_aux_inputs: ${use_aux_inputs}
+train_encoder: true
+norm: false
+history: ${suite.history}
+history_len: ${suite.history_len}
+eval_history_len: ${suite.eval_history_len}
+separate_encoders: false # have a separate encoder for each pixel key
+aux_encoders: null
+aux_history_encoders:
+  sensor:
+    _partial_: true
+    _target_: agent.networks.rnn.RNNEncoder
+    rnn_type: lstm
+temporal_agg: ${temporal_agg}
+max_episode_len: ${suite.task_make_fn.max_episode_len} # to be specified later
+num_queries: ${num_queries}
+use_language: ${use_language}
+use_actions: ${use_actions}

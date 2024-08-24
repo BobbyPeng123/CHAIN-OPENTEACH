@@ -1,0 +1,36 @@
+# @package suite
+defaults:
+  - _self_
+  - robosuite_task@_global_: Panda_Door
+
+suite: robosuite
+
+name: 'robosuite'
+
+# task settings
+frame_stack: 1
+action_repeat: 1 # increase if required
+discount: 0.99
+hidden_dim: 1024
+
+# train settings
+num_train_frames: 1100000
+num_seed_frames: 12000
+train_history_len: 10
+
+# eval
+eval_every_frames: 10000
+num_eval_episodes: 1
+eval_history_len: 10
+
+# snapshot
+save_snapshot: true
+
+task_make_fn:
+  _target_: suite.robosuite.make
+  name: ${task_name}
+  frame_stack: ${suite.frame_stack}
+  action_repeat: ${suite.action_repeat}
+  # seed: ${seed} # robosuite just uses numpy seed
+  height: 84
+  width: 84
